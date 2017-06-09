@@ -14,6 +14,16 @@
                     <div><%= movie.title %> (<%= movie.year %>)</div>
                 <% } %>
             </div>
+            <br/>
+            <div>
+                <form action='/movies' method="post">
+                    <label for="movieTitle"></label>
+                    <input type="text" name="movieTitle" id="movieTitle">
+                    <label for="movieYear"></label>
+                    <input type="text" name="movieYear" id="movieYear">
+                    <button type="submit">Ajouter</button>
+                </form>
+            </div>
         </div>
         <% include ./partials/footer.ejs %>
     </body>
