@@ -30,6 +30,8 @@ let urlEncoded = bodyParser.urlencoded({ extended: false});
 
 app.post('/movies', urlEncoded, (req, res) => {
   console.log(req.body);
+  console.log('le titre: ', req.body.movieTitle);
+  console.log('année: ', req.body.movieYear);
   res.sendStatus(201);
 });
 
