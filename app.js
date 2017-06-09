@@ -3,6 +3,7 @@ const app = express();
 const bodyParser = require('body-parser');
 const PORT = 3000;
 
+let frenchMovies = [];
 
 /* MIDDLEWARE */
 app.use('/public', express.static('public'));
@@ -17,7 +18,7 @@ app.get('/movies', (req, res) => {
 
     const title = 'Films français des trentes dernières années';
 
-    const frenchMovies = [
+    frenchMovies = [
         { title: 'Le fabuleux destin d\'Amélie Poulain', year: 2001},
         { title: 'Buffet froid', year: 1979},
         { title: 'Le diner de cons', year: 1998},
@@ -32,6 +33,11 @@ app.post('/movies', urlEncoded, (req, res) => {
   console.log(req.body);
   console.log('le titre: ', req.body.movieTitle);
   console.log('année: ', req.body.movieYear);
+  const newMovie = {title: req.body.movieTitle, year: req.body.movieYear};
+  //frenchMovies.push(newMovie);
+  frenchMovies = [...frenchMovies, newMovie];
+  console.log(frenchMovies);
+
   res.sendStatus(201);
 });
 
