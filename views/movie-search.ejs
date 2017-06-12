@@ -32,7 +32,17 @@
                 axios.get(query)
                     .then(function (response) {
                         console.log(response);
+                        displayResults(response.data.results);
                 })
+            }
+
+            function displayResults(results) {
+                resultDiv.innerHTML = '';
+                for(let result of results) {
+                    let movieDiv = document.createElement('div');
+                    movieDiv.innerHTML = result.title;
+                    resultDiv.appendChild(movieDiv);
+                }
             }
         </script>
     </body>
