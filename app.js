@@ -63,8 +63,13 @@ app.get('/movies/:id', (req, res) => {
     res.render('movies-details', {movieId: id});
 });
 
+
 app.get('/', (req, res) => {
     res.render('index');
+});
+
+app.get('/movie-search', (req, res) => {
+    res.render('movie-search');
 });
 
 app.listen(PORT, () => { console.log(`on est sur le port : ${PORT}`) });
