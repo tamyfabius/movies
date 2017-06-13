@@ -41,6 +41,11 @@
             var form = document.querySelector('form');
             form.addEventListener('submit', loginUser);
 
+            var loginArea = document.querySelector('#login');
+            var profileArea = document.querySelector('#profile');
+            var disconnectBtn = document.querySelector('#disconnectBtn');
+            disconnectBtn.addEventListener('click', disconnect);
+
             function loginUser() {
                 loginUserWithXHR(event);
             }
@@ -58,8 +63,8 @@
                     if(xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200){
 
                         var token = xhr.response;
-
                         localStorage.setItem('token', token);
+                        switchToLoggedInMode();
                         form.reset();
                     }
                 }
@@ -68,6 +73,22 @@
                 var password = document.getElementById('password').value;
                 var payload = "email=" + email + "&" + "password=" + password;
                 xhr.send(payload);
+            }
+
+            function switchToLoggedInMode(){
+                loginArea.style.display = 'none';
+                profileArea.style.display = 'block';
+
+            }
+
+            function switchToLoggedOutMode (){
+                loginArea.style.display = 'block ';
+                profileArea.style.display = 'none ';
+            }
+
+            function disconnect(){
+                switchToLoggedOutMode();
+                localStorage.removeItem('token');
             }
         </script>
         <!--<script>-->
