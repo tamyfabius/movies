@@ -4,21 +4,24 @@ const bodyParser = require('body-parser');
 const multer = require('multer');
 const upload = multer();
 
+
 const jwt = require('jsonwebtoken');
+const expressJwt = require('express-jwt');
 
 
 const PORT = 3000;
-
 let frenchMovies = [];
+const secret = 'qsdjS12ozehdoIJ123DJOZJLDSCqsdeffdg123ER56SDFZedhWXojqshduzaohduihqsDAqsdq';
 
 /* MIDDLEWARE */
 app.use('/public', express.static('public'));
-// app.use(bodyParser.urlencoded({ extended: false}));
+app.use(expressJwt({secret: secret}).unless({path: ['/login']}));
 
 /* ROUTES */
 app.set('views', './views');
-
 app.set('view engine', 'ejs');
+
+
 
 app.get('/movies', (req, res) => {
     const title = 'Films français des trentes dernières années';
@@ -77,7 +80,6 @@ app.get('/login', (req, res) => {
 });
 
 const fakeUser = { email: 'testuser@gmail.com', password: '123456test'};
-const secret = 'qsdjS12ozehdoIJ123DJOZJLDSCqsdeffdg123ER56SDFZedhWXojqshduzaohduihqsDAqsdq';
 
 app.post('/login', urlEncoded, (req, res) => {
     console.log('login user', req.body)
