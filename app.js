@@ -4,6 +4,9 @@ const bodyParser = require('body-parser');
 const multer = require('multer');
 const upload = multer();
 
+const jwt = require('jsonwebtoken');
+
+
 const PORT = 3000;
 
 let frenchMovies = [];
@@ -73,9 +76,8 @@ app.get('/login', (req, res) => {
     res.render('login');
 });
 
-const fakeUser = { email: 'testuser@gmail.com', password: '123456test'}
-
-
+const fakeUser = { email: 'testuser@gmail.com', password: '123456test'};
+const secret = 'qsdjS12ozehdoIJ123DJOZJLDSCqsdeffdg123ER56SDFZedhWXojqshduzaohduihqsDAqsdq';
 
 app.post('/login', urlEncoded, (req, res) => {
     console.log('login user', req.body)
@@ -83,12 +85,14 @@ app.post('/login', urlEncoded, (req, res) => {
         res.sendStatus(500);
     } else {
         if (fakeUser.email === req.body.email && fakeUser.password === req.body.password){
-            res.json({
-                email: 'testuser@gmail.com',
-                favoriteMovie: 'dqsdqsdqsdqsdqsdqsdq',
-                favoriteMovieTheater: 'dqsdqsdqsdsqdsq',
-                lastLoginDate: new Date()
-            });
+            const myToken = jwt.sign({iss: 'http://expressmovies.fr', user: 'Tamy', role: 'moderator'}, secret);
+            res.json(myToken);
+            // res.json({
+            //     email: 'testuser@gmail.com',
+            //     favoriteMovie: 'dqsdqsdqsdqsdqsdqsdq',
+            //     favoriteMovieTheater: 'dqsdqsdqsdsqdsq',
+            //     lastLoginDate: new Date()
+            // });
         } else {
             res.sendStatus(401);
         }
