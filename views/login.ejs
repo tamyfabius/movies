@@ -19,7 +19,7 @@
                     <input type="text" name="email" id="email">
                     <label for="password">mot de passe</label>
                     <input type="password" name="password" id="password">
-                    <button type="submit">connexion</button>
+                    <button type="submit">Connexion</button>
                 </form>
             </div>
             <br>
@@ -45,6 +45,8 @@
             var profileArea = document.querySelector('#profile');
             var disconnectBtn = document.querySelector('#disconnectBtn');
             disconnectBtn.addEventListener('click', disconnect);
+            var connectionLinkArea = document.querySelector('#connectionLink');
+            handleFormDisplay();
 
             function loginUser() {
                 loginUserWithXHR(event);
@@ -75,9 +77,18 @@
                 xhr.send(payload);
             }
 
+            function handleFormDisplay() {
+                if(localStorage.getItem('token')){
+                    switchToLoggedInMode();
+                } else {
+                    switchToLoggedOutMode();
+                }
+            }
+
             function switchToLoggedInMode(){
                 loginArea.style.display = 'none';
                 profileArea.style.display = 'block';
+                connectionLinkArea.innerHTML = '<a href="/login">Déconnexion</a>';
 
             }
 
@@ -128,11 +139,11 @@
                 }
 
                 function displayLoggedInView() {
-                    connectionLinkArea.innerHTML = '<a href="/login">déconnexion</a>';
+                    connectionLinkArea.innerHTML = '<a href="/login">Déconnexion</a>';
                 }
 
                 function displayLoggedOutView() {
-                    connectionLinkArea.innerHTML = '<a href="/login">connexion</a>';
+                    connectionLinkArea.innerHTML = '<a href="/login">Connexion</a>';
                 }
             });
         </script>
