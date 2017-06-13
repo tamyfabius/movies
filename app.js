@@ -18,7 +18,6 @@ app.set('views', './views');
 app.set('view engine', 'ejs');
 
 app.get('/movies', (req, res) => {
-
     const title = 'Films français des trentes dernières années';
 
     frenchMovies = [
@@ -31,7 +30,6 @@ app.get('/movies', (req, res) => {
 });
 
 let urlEncoded = bodyParser.urlencoded({ extended: false});
-
 // app.post('/movies', urlEncoded, (req, res) => {
 //   console.log(req.body);
 //   console.log('le titre: ', req.body.movieTitle);
@@ -63,13 +61,38 @@ app.get('/movies/:id', (req, res) => {
     res.render('movies-details', {movieId: id});
 });
 
-
 app.get('/', (req, res) => {
     res.render('index');
 });
 
 app.get('/movie-search', (req, res) => {
     res.render('movie-search');
+});
+
+app.get('/login', (req, res) => {
+    res.render('login');
+});
+
+const fakeUser = { email: 'testuser@gmail.com', password: '123456test'}
+
+
+
+app.post('/login', urlEncoded, (req, res) => {
+    console.log('login user', req.body)
+    if(!req.body) {
+        res.sendStatus(500);
+    } else {
+        if (fakeUser.email === req.body.email && fakeUser.password === req.body.password){
+            res.json({
+                email: 'testuser@gmail.com',
+                favoriteMovie: 'dqsdqsdqsdqsdqsdqsdq',
+                favoriteMovieTheater: 'dqsdqsdqsdsqdsq',
+                lastLoginDate: new Date()
+            });
+        } else {
+            res.sendStatus(401);
+        }
+    }
 });
 
 app.listen(PORT, () => { console.log(`on est sur le port : ${PORT}`) });
