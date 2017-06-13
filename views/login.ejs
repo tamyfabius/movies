@@ -43,6 +43,9 @@
 
             var loginArea = document.querySelector('#login');
             var profileArea = document.querySelector('#profile');
+
+            var displayPayloadBtn = document.querySelector('#display-payload');
+            displayPayloadBtn.addEventListener('click', displayPayload);
             var disconnectBtn = document.querySelector('#disconnectBtn');
             disconnectBtn.addEventListener('click', disconnect);
             var connectionLinkArea = document.querySelector('#connectionLink');
@@ -89,12 +92,28 @@
                 loginArea.style.display = 'none';
                 profileArea.style.display = 'block';
                 connectionLinkArea.innerHTML = '<a href="/login">Déconnexion</a>';
-
             }
 
             function switchToLoggedOutMode (){
                 loginArea.style.display = 'block ';
                 profileArea.style.display = 'none ';
+            }
+
+            function displayPayload(){
+                var payload = parseJwt();
+                var decodedPayloadDiv = document.querySelector('#decoded-payload');
+                decodedPayloadDiv.innerHTML = '<pre>' + JSON.stringify(payload) + '</pre>';
+            }
+
+            function parseJwt(){
+                var tokenFromStorage = localStorage.getItem('token');
+
+                if(tokenFromStorage){
+                    var base64Payload = tokenFromStorage.split('.')[1];
+                    return JSON.parse(window.atob(base64Payload));
+                } else {
+                    return 'not token to parse';
+                }
             }
 
             function disconnect(){
