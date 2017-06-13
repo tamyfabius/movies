@@ -87,12 +87,7 @@ app.post('/login', urlEncoded, (req, res) => {
         if (fakeUser.email === req.body.email && fakeUser.password === req.body.password){
             const myToken = jwt.sign({iss: 'http://expressmovies.fr', user: 'Tamy', role: 'moderator'}, secret);
             res.json(myToken);
-            // res.json({
-            //     email: 'testuser@gmail.com',
-            //     favoriteMovie: 'dqsdqsdqsdqsdqsdqsdq',
-            //     favoriteMovieTheater: 'dqsdqsdqsdsqdsq',
-            //     lastLoginDate: new Date()
-            // });
+
         } else {
             res.sendStatus(401);
         }
