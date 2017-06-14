@@ -8,7 +8,8 @@ const jwt = require('jsonwebtoken');
 const expressJwt = require('express-jwt');
 
 const faker = require('faker');
-
+const config = require('./config');
+console.log(config);
 
 const mongoose = require('mongoose');
 /* schema mongoose */
@@ -34,7 +35,7 @@ const  movieSchema = mongoose.Schema({
 // -----------------------------------------------
 // connexion à la base mlab via mongoose
 // -----------------------------------------------
-mongoose.connect('mongodb://tamyfabius:bessino95@ds123662.mlab.com:23662/expressmovie');
+mongoose.connect(`mongodb://${config.db.user}:${config.db.password}@ds123662.mlab.com:23662/expressmovie`);
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error: cannot connect to my DB'));
 db.once('open', () => {
@@ -56,7 +57,6 @@ app.set('view engine', 'ejs');
 
 app.get('/movies', (req, res) => {
     const title = 'Films français des trentes dernières années';
-
     // frenchMovies = [
     //     { title: 'Le fabuleux destin d\'Amélie Poulain', year: 2001},
     //     { title: 'Buffet froid', year: 1979},
