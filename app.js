@@ -49,7 +49,7 @@ const secret = 'qsdjS12ozehdoIJ123DJOZJLDSCqsdeffdg123ER56SDFZedhWXojqshduzaohdu
 
 /* -----------------  MIDDLEWARE -----------------*/
 app.use('/public', express.static('public'));
-app.use(expressJwt({secret: secret}).unless({path: ['', '/movies', '/movie-search', '/login']}));
+app.use(expressJwt({secret: secret}).unless({path: ['', '/movies','/movie-search', '/login', new RegExp('/movies.*/', 'i')]}));
 
 /* ----------------- ROUTES ----------------- */
 app.set('views', './views');
@@ -121,6 +121,11 @@ app.get('/movies/add', (req, res) => {res.send('formulaire')});
 app.get('/movies/:id', (req, res) => {
     const id = req.params.id;
     res.render('movies-details', {movieId: id});
+});
+
+app.put('/movies/:id', (req, res) => {
+    const id = req.params.id;
+    res.send(`Put request to movie od id ${id}`);
 });
 
 app.get('/', (req, res) => {
