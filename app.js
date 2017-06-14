@@ -16,10 +16,18 @@ const  movieSchema = mongoose.Schema({
 
 /* création d'un modèle */
 const Movie = mongoose.model('Movie', movieSchema);
-
 const title = 'Terminator';
-const year = '1984'
+const year = '1984';
+
+/*enregister en Base*/
 const myMovie = new Movie({movieTitle: title, movieYear: year });
+myMovie.save((err, savedMovie) => {
+    if(err){
+        console.error(err);
+    } else {
+        console.log('savedMovie', savedMovie);
+    }
+});
 // -----------------------------------------------
 // connexion à la base mlab via mongoose
 // -----------------------------------------------
