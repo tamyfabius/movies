@@ -4,21 +4,30 @@ const bodyParser = require('body-parser');
 const multer = require('multer');
 const upload = multer();
 
-
 const jwt = require('jsonwebtoken');
 const expressJwt = require('express-jwt');
 const mongoose = require('mongoose');
 
+// -----------------------------------------------
+// connexion à la base mlab via mongoose
+// -----------------------------------------------
+mongoose.connect('mongodb://tamyfabius:bessino95@ds123662.mlab.com:23662/expressmovie');
+const db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error: cannot connect to my DB'));
+db.once('open', () => {
+    console.log('connected to the DB :)');
+});
+// -----------------------------------------------
 
 const PORT = 3000;
 let frenchMovies = [];
 const secret = 'qsdjS12ozehdoIJ123DJOZJLDSCqsdeffdg123ER56SDFZedhWXojqshduzaohduihqsDAqsdq';
 
-/* MIDDLEWARE */
+/* -----------------  MIDDLEWARE -----------------*/
 app.use('/public', express.static('public'));
 app.use(expressJwt({secret: secret}).unless({path: ['/', '/movies', '/movie-search', '/login']}));
 
-/* ROUTES */
+/* ----------------- ROUTES ----------------- */
 app.set('views', './views');
 app.set('view engine', 'ejs');
 
