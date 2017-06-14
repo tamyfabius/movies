@@ -8,11 +8,18 @@ const jwt = require('jsonwebtoken');
 const expressJwt = require('express-jwt');
 const mongoose = require('mongoose');
 
+/* schema mongoose */
 const  movieSchema = mongoose.Schema({
     movieTitle: String,
     movieYear: Number
-})
+});
 
+/* création d'un modèle */
+const Movie = mongoose.model('Movie', movieSchema);
+
+const title = 'Terminator';
+const year = '1984'
+const myMovie = new Movie({movieTitle: title, movieYear: year });
 // -----------------------------------------------
 // connexion à la base mlab via mongoose
 // -----------------------------------------------
