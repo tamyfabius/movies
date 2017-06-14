@@ -16,20 +16,21 @@ const  movieSchema = mongoose.Schema({
     movieTitle: String,
     movieYear: Number
 });
-/* création d'un modèle */
-const Movie = mongoose.model('Movie', movieSchema);
-const title = faker.lorem.sentence(3);
-const year = Math.floor(Math.random() * 80) + 1950;
 
-/*enregister en Base*/
-const myMovie = new Movie({movieTitle: title, movieYear: year });
-myMovie.save((err, savedMovie) => {
-    if(err){
-        console.error(err);
-    } else {
-        console.log('savedMovie', savedMovie);
-    }
-});
+/* création d'un modèle et enregister en Base*/
+ const Movie = mongoose.model('Movie', movieSchema);
+// const title = faker.lorem.sentence(3);
+// const year = Math.floor(Math.random() * 80) + 1950;
+// const myMovie = new Movie({movieTitle: title, movieYear: year });
+// myMovie.save((err, savedMovie) => {
+//     if(err){
+//         console.error(err);
+//     } else {
+//         console.log('savedMovie', savedMovie);
+//     }
+// });
+
+
 // -----------------------------------------------
 // connexion à la base mlab via mongoose
 // -----------------------------------------------
@@ -47,7 +48,7 @@ const secret = 'qsdjS12ozehdoIJ123DJOZJLDSCqsdeffdg123ER56SDFZedhWXojqshduzaohdu
 
 /* -----------------  MIDDLEWARE -----------------*/
 app.use('/public', express.static('public'));
-app.use(expressJwt({secret: secret}).unless({path: ['/', '/movies', '/movie-search', '/login']}));
+app.use(expressJwt({secret: secret}).unless({path: ['', '/movies', '/movie-search', '/login']}));
 
 /* ----------------- ROUTES ----------------- */
 app.set('views', './views');
@@ -84,9 +85,22 @@ app.post('/movies', upload.fields([]), (req, res) => {
     } else {
         const formData = req.body;
         console.log('formData', formData);
-        const newMovie = {title: req.body.movieTitle, year: req.body.movieYear};
-        frenchMovies = [...frenchMovies, newMovie];
-        res.sendStatus(201);
+
+        const title = req.body.movieTitle;
+        const year = req.body.movieYear;
+        const myMovie = new Movie({movieTitle: title, movieYear: year});
+
+        myMovie.save((err, savedmovie) => {
+            if(err){
+                console.error(err);
+            } else {
+                console.log(savedmovie);
+                res.sendStatus(201);
+            }
+        })
+        // const newMovie = {title: req.body.movieTitle, year: req.body.movieYear};
+        // frenchMovies = [...frenchMovies, newMovie];
+        // res.sendStatus(201);
     }
 });
 
