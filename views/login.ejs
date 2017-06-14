@@ -4,6 +4,7 @@
         <meta charset="UTF-8">
         <title>Login</title>
         <link rel="stylesheet" href="../public/styles.css">
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     </head>
 
     <body>
@@ -50,6 +51,9 @@
             disconnectBtn.addEventListener('click', disconnect);
             var connectionLinkArea = document.querySelector('#connectionLink');
             handleFormDisplay();
+
+            var memberOnlyLink = document.querySelector('#member-only');
+            memberOnlyLink.addEventListener('click', makeRequestWithToken);
 
             function loginUser() {
                 loginUserWithXHR(event);
@@ -165,6 +169,29 @@
                     connectionLinkArea.innerHTML = '<a href="/login">Connexion</a>';
                 }
             });
+
+            function makeRequestWithToken(event){
+                event.preventDefault();
+                var page = this.id;
+                var tokenFromStorage = localStorage.getItem('token');
+                var config = {};
+
+                if(tokenFromStorage){
+                    config.headers = {'Authorization':'Bearer ' + JSON.parse(tokenFromStorage)}
+                }
+
+                axios.get(
+                    'http://localhost:3000/' + page,
+                    config
+                ).then(
+                    res => {
+                        console.log('sucess');
+                        console.log(res);
+                    }
+                ).catch(err => {
+                    console.error('makeRequestWithToken err', err);
+                });
+            }
         </script>
     </body>
 </html>

@@ -15,7 +15,7 @@ const secret = 'qsdjS12ozehdoIJ123DJOZJLDSCqsdeffdg123ER56SDFZedhWXojqshduzaohdu
 
 /* MIDDLEWARE */
 app.use('/public', express.static('public'));
-app.use(expressJwt({secret: secret}).unless({path: ['/login']}));
+app.use(expressJwt({secret: secret}).unless({path: ['/', '/movies', '/movie-search', '/login']}));
 
 /* ROUTES */
 app.set('views', './views');
@@ -96,6 +96,10 @@ app.post('/login', urlEncoded, (req, res) => {
     }
 });
 
+app.get('/member-only', (req, res) => {
+    console.log('req.user', req.user);
+    res.send(req.user);
+})
 app.listen(PORT, () => { console.log(`on est sur le port : ${PORT}`) });
 
 
