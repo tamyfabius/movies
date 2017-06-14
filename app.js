@@ -57,13 +57,25 @@ app.set('view engine', 'ejs');
 app.get('/movies', (req, res) => {
     const title = 'Films français des trentes dernières années';
 
-    frenchMovies = [
-        { title: 'Le fabuleux destin d\'Amélie Poulain', year: 2001},
-        { title: 'Buffet froid', year: 1979},
-        { title: 'Le diner de cons', year: 1998},
-        { title: 'De rouille et d\'os', year: 2012},
-    ];
-    res.render('movies', { movies: frenchMovies, title: title});
+    // frenchMovies = [
+    //     { title: 'Le fabuleux destin d\'Amélie Poulain', year: 2001},
+    //     { title: 'Buffet froid', year: 1979},
+    //     { title: 'Le diner de cons', year: 1998},
+    //     { title: 'De rouille et d\'os', year: 2012},
+    // ];
+    //
+    frenchMovies = [];
+
+    Movie.find((err, movies) => {
+        if(err){
+            console.error('could not retrieve movies from DB');
+            res.sendStatus(500);
+        } else {
+            frenchMovies = movies;
+            res.render('movies', { movies: frenchMovies, title: title});
+        }
+    });
+
 });
 
 let urlEncoded = bodyParser.urlencoded({ extended: false});
