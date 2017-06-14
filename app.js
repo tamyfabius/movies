@@ -6,18 +6,20 @@ const upload = multer();
 
 const jwt = require('jsonwebtoken');
 const expressJwt = require('express-jwt');
-const mongoose = require('mongoose');
 
+const faker = require('faker');
+
+
+const mongoose = require('mongoose');
 /* schema mongoose */
 const  movieSchema = mongoose.Schema({
     movieTitle: String,
     movieYear: Number
 });
-
 /* création d'un modèle */
 const Movie = mongoose.model('Movie', movieSchema);
-const title = 'Terminator';
-const year = '1984';
+const title = faker.lorem.sentence(3);
+const year = Math.floor(Math.random() * 80) + 1950;
 
 /*enregister en Base*/
 const myMovie = new Movie({movieTitle: title, movieYear: year });
