@@ -18,8 +18,8 @@ const  movieSchema = mongoose.Schema({
     movieYear: Number
 });
 
-/* création d'un modèle et enregister en Base*/
- const Movie = mongoose.model('Movie', movieSchema);
+/* création d'un modèle et enregister en Base = MODEL */
+const Movie = mongoose.model('Movie', movieSchema);
 // const title = faker.lorem.sentence(3);
 // const year = Math.floor(Math.random() * 80) + 1950;
 // const myMovie = new Movie({movieTitle: title, movieYear: year });
@@ -123,9 +123,22 @@ app.get('/movies/:id', (req, res) => {
     res.render('movies-details', {movieId: id});
 });
 
-app.put('/movies/:id', (req, res) => {
+app.put('/movies/:id', urlEncoded, (req, res) => {
+    if(!req.body){
+        console.error(500);
+    }
+    console.log('movieTitle: ', req.body.movieTitle, 'movieYear: ', req.body.movieYear);
     const id = req.params.id;
-    res.send(`Put request to movie od id ${id}`);
+
+    Movie.findByIdAndUpdate(id, {$set: {movieTitle: req.body.movieTitle, movieYear: req.body.movieYear}}, {new: true}, (err, movie)=>{
+        if(err){
+            console.error(err);
+            return res.send('Le film n\'a pas pu être mis à jour');
+        } /*else {
+            res.send(Movie);
+        }*/
+    })
+    // res.send(`Put request to movie od id ${id}`);
 });
 
 app.get('/', (req, res) => {
