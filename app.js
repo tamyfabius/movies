@@ -7,6 +7,7 @@ const upload = multer();
 
 const jwt = require('jsonwebtoken');
 const expressJwt = require('express-jwt');
+const mongoose = require('mongoose');
 
 
 const PORT = 3000;
@@ -20,8 +21,6 @@ app.use(expressJwt({secret: secret}).unless({path: ['/', '/movies', '/movie-sear
 /* ROUTES */
 app.set('views', './views');
 app.set('view engine', 'ejs');
-
-
 
 app.get('/movies', (req, res) => {
     const title = 'Films français des trentes dernières années';
