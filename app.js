@@ -49,7 +49,7 @@ const secret = 'qsdjS12ozehdoIJ123DJOZJLDSCqsdeffdg123ER56SDFZedhWXojqshduzaohdu
 
 /* -----------------  MIDDLEWARE -----------------*/
 app.use('/public', express.static('public'));
-app.use(expressJwt({secret: secret}).unless({path: ['', '/movies','/movie-search', '/login', new RegExp('/movies.*/', 'i')]}));
+app.use(expressJwt({secret: secret}).unless({path: ['/', '/movies','/movie-search', '/login', new RegExp('/movies.*/', 'i'), new RegExp('/movies-details.*/', 'i')]}));
 
 /* ----------------- ROUTES ----------------- */
 app.set('views', './views');
@@ -123,22 +123,31 @@ app.get('/movies/:id', (req, res) => {
     res.render('movies-details', {movieId: id});
 });
 
-app.put('/movies/:id', urlEncoded, (req, res) => {
+app.get('/movies-details/:id', (req, res) => {
+    const id = req.params.id;
+    Movie.findById(id, (err, movie) => {
+        console.log('movie', movie);
+        res.render('movies-details', {movieId: movie._id});
+    });
+
+});
+
+app.put('/movies-details/:id', upload.fields([]), (req, res) => {
+    const id = req.params.id;
+    // res.send(`Put request to movie od id ${id}`);
     if(!req.body){
-        console.error(500);
+        return res.sendStatus(500);
     }
     console.log('movieTitle: ', req.body.movieTitle, 'movieYear: ', req.body.movieYear);
-    const id = req.params.id;
+
 
     Movie.findByIdAndUpdate(id, {$set: {movieTitle: req.body.movieTitle, movieYear: req.body.movieYear}}, {new: true}, (err, movie)=>{
         if(err){
-            console.error(err);
+            console.log(err);
             return res.send('Le film n\'a pas pu être mis à jour');
-        } /*else {
-            res.send(Movie);
-        }*/
+        }
+        res.redirect('/movies');
     })
-    // res.send(`Put request to movie od id ${id}`);
 });
 
 app.get('/', (req, res) => {
